@@ -1,0 +1,101 @@
+﻿@model IEnumerable<Feedback.Models.Request>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table" id="tableRequest">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<input type="text" id="SearchInput" class="form-control" onchange="Search()" />
+
+<div id="Cards"></div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+		$('#tableRequest').DataTable();
+	});
+</script>
+
+<script>
+
+    function Search(){
+
+        var value = $("#SearchInput").val();
+        var data = [{
+            "Id": 1,
+            "Name": "Test2",
+            "CreatedDate": "2020-12-12T00:00:00",
+            "Status": true,
+            "ImageUrl": "Test"
+        }, {
+            "Id": 2,
+            "Name": "Test",
+            "CreatedDate": "2020-12-12T00:00:00",
+            "Status": true,
+            "ImageUrl": "Test"
+        }];
+
+        var filterdata = data.filter(x => x.Name == value);
+
+        $("#Cards").html("");
+        for (var i = 0; i < filterdata.length; i++) {
+            $("#Cards").append("<div class='card' style='width: 18rem;'><img class='card-img-top' src='" + filterdata[i].ImageUrl + "' alt='Card image cap'><div class='card-body'><h5 class='card-title'>" + filterdata[i].Name + "</h5><p class='card-text'>" + filterdata[i].CreatedDate + "</p><a href='#' class='btn btn-primary'>Go somewhere</a></div></div>");
+        }
+    }
+    
+
+</script>
